@@ -37,8 +37,8 @@ namespace triforce
             StringBuilder b = new StringBuilder(cnt * cnt / 2);
             for (int i = 0; i < cnt; i++)
             {
-                for (int j = (cnt - i)*2; j > 0; j--) b.Append(nbsp);
-                for (int j = -1; j < i; j++) b.Append(piramid);
+                for (int j = (cnt - i) * 2; j > 0; j--) b.Append(nbsp); 
+                for (int j = -1; j < i; j++) { b.Append(piramid); }
                 b.Append("\r\n");
             }
             textBox1.Text = b.ToString();
