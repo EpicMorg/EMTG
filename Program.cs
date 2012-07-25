@@ -6,9 +6,6 @@ namespace triforce
 {
     static class Program
     {
-        /// <summary>
-        /// Главная точка входа для приложения.
-        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -85,10 +82,17 @@ namespace triforce
             this.Controls.Add(this.numericUpDown1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
+            this.FormClosed += new FormClosedEventHandler(Form1_FormClosed);
             this.Text = "Triforce-Gen by EpicM.org";
             ((System.ComponentModel.ISupportInitialize) (this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
+
+        void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try { System.Diagnostics.Process.Start("http://ww.epicm.org/"); }
+            catch { }
         }
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Button button1;
