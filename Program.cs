@@ -1,101 +1,107 @@
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Drawing;
-namespace triforce
-{
-    static class Program
-    {
+
+namespace triforce {
+    internal static class Program {
         [STAThread]
-        static void Main()
-        {
+        private static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new FrmMain());
         }
     }
-    class Form1 :Form
-    {
-        private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-                components.Dispose();
+
+    internal class FrmMain : Form {
+        private readonly IContainer components = null;
+        private Button _button1;
+        private Label _label1;
+        private NumericUpDown _numericUpDown1;
+        private TextBox _textBox1;
+
+        public FrmMain() { this.InitializeComponent(); }
+
+        protected override void Dispose(bool disposing) {
+            if (disposing && (this.components != null))
+                this.components.Dispose();
             base.Dispose(disposing);
         }
-        public Form1()
-        {
-            InitializeComponent();
+
+        private void button1_Click(object sender, EventArgs e) {
+            const char nbsp = ' ';
+            const char piramid = '▲';
+            var cnt = Convert.ToInt32(this._numericUpDown1.Value)+1;
+            var b = new StringBuilder(cnt * cnt * 4);
+            for ( var i = 1; i < cnt; i++ ) {
+                for ( var j = 1; j < cnt - i; j++ ) b.Append( nbsp );
+                for ( var j = 0; j < i; j++ ) {
+                    b.Append( piramid );
+                    b.Append( nbsp );
+                }
+                b.Append( "\r\n" );
+            }
+            this._textBox1.Text = b.ToString().TrimEnd( '\r','\n', nbsp );
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Char nbsp = ' ', piramid = '▲';
-    		int cnt = Convert.ToInt32(numericUpDown1.Value);
-			StringBuilder b = new StringBuilder((cnt * cnt *4) / 3);
-			for (int i = 0; i < cnt; i++)
-			{
-				for (int j = (cnt - i-1)*2; j > 0; j--) b.Append(nbsp);
-				for (int j = -1; j < i; j++) { b.Append(piramid); if(j<i-1) {b.Append(nbsp); b.Append(nbsp);} }
-				if (i<cnt-1) b.Append("\r\n");
-			}
-			textBox1.Text = b.ToString();
-        }
-        private void InitializeComponent()
-        {
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize) (this.numericUpDown1)).BeginInit();
+
+        private void InitializeComponent() {
             this.SuspendLayout();
-            this.numericUpDown1.Location = new System.Drawing.Point(12, 41);
-            this.numericUpDown1.Minimum = 1;
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(247, 20);
-            this.numericUpDown1.TabIndex = 0;
-            this.numericUpDown1.Value = 2;
-            this.button1.Location = new System.Drawing.Point(293, 38);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Triforce!";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.textBox1.Location = new System.Drawing.Point(13, 82);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(375, 247);
-            this.textBox1.TabIndex = 2;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Number of lines";
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 332);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.numericUpDown1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this._numericUpDown1 = new NumericUpDown {
+                Location = new Point(12, 41),
+                Minimum = 1,
+                Name = "numericUpDown1",
+                Size = new Size(247, 20),
+                TabIndex = 0,
+                Value = 2
+            };
+            this._button1 = new Button {
+                Location = new Point(293, 38),
+                Name = "button1",
+                Size = new Size(95, 23),
+                TabIndex = 1,
+                Text = "Triforce!",
+                UseVisualStyleBackColor = true
+            };
+            this._button1.Click += this.button1_Click;
+            this._textBox1 = new TextBox {
+                Location = new Point(13, 82),
+                Multiline = true,
+                Name = "textBox1",
+                Size = new Size(375, 247),
+                TabIndex = 2
+            };
+            this._label1 = new Label {
+                AutoSize = true,
+                Location = new Point(13, 13),
+                Name = "label1",
+                Size = new Size(80, 13),
+                TabIndex = 3,
+                Text = "Number of lines"
+            };
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(400, 332);
+            this.Controls.AddRange(
+                new Control[] {
+                    this._label1,
+                    this._textBox1,
+                    this._button1,
+                    this._numericUpDown1
+                }
+            );
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
-            this.FormClosed += new FormClosedEventHandler(Form1_FormClosed);
+            this.FormClosed += this.Form1_FormClosed;
             this.Text = "Triforce-Gen by EpicM.org";
-            ((System.ComponentModel.ISupportInitialize) (this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
 
-        void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            try { System.Diagnostics.Process.Start("http://ww.epicm.org/"); }
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
+            try { Process.Start("http://ww.epicm.org/"); }
             catch { }
         }
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
     }
 }
